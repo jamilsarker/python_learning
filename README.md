@@ -3,7 +3,30 @@
 <div align="center">
   <h3>পাইথন শিখুন সহজভাবে</h3>
   <p>A complete, production-quality Python learning platform with Bengali support</p>
+  <p><strong>🎯 Now with Demo Mode - No login required!</strong></p>
 </div>
+
+## 🚀 Quick Start (2 Minutes!)
+
+### Try it NOW - No Setup Required!
+
+```bash
+# Clone the repository
+git clone https://github.com/jamilsarker/python_learning.git
+cd python_learning/pyshikhi-frontend
+
+# Install dependencies
+npm install
+
+# Start the app
+npm run dev
+```
+
+Then open: **http://localhost:5173** 
+
+**That's it!** No Firebase, no login, just pure learning! 🎓
+
+---
 
 ## 🌟 Features
 
