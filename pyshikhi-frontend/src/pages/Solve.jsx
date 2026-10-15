@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, Copy, Check, Play, History } from 'lucide-react';
 import CodeEditor from '../components/CodeEditor';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { useAuth } from '../contexts/AuthContext';
 
 const Solve = () => {
   const [problem, setProblem] = useState('');
@@ -15,7 +12,6 @@ const Solve = () => {
   const [running, setRunning] = useState(false);
   const [history, setHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
-  const { currentUser } = useAuth();
 
   const solveProblem = async () => {
     if (!problem.trim()) {
@@ -51,17 +47,13 @@ const Solve = () => {
       };
       setHistory((prev) => [newHistoryItem, ...prev]);
 
-      // Save to Firestore
-      if (currentUser) {
-        try {
-          const userRef = doc(db, 'users', currentUser.uid);
-          await updateDoc(userRef, {
-            'solveHistory': arrayUnion(newHistoryItem),
-            'progress.lastActive': new Date().toISOString(),
-          });
-        } catch (err) {
-          console.error('Failed to save history:', err);
-        }
+      // Demo mode - save to localStorage instead of Firestore
+      try {
+        const existingHistory = JSON.parse(localStorage.getItem('pyshikhi_history') || '[]');
+        existingHistory.unshift(newHistoryItem);
+        localStorage.setItem('pyshikhi_history', JSON.stringify(existingHistory.slice(0, 20))); // Keep last 20
+      } catch (err) {
+        console.error('Failed to save history:', err);
       }
     } catch (err) {
       console.error(err);

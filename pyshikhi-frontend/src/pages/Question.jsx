@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import { questions } from '../data/questions';
 import CodeEditor from '../components/CodeEditor';
 import { Play, Lightbulb, Eye, CheckCircle, XCircle, Filter } from 'lucide-react';
-import { doc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { useAuth } from '../contexts/AuthContext';
 
 const Question = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -17,7 +14,6 @@ const Question = () => {
   const [pyodide, setPyodide] = useState(null);
   const [loadingPyodide, setLoadingPyodide] = useState(true);
   const [filter, setFilter] = useState('all');
-  const { currentUser } = useAuth();
 
   // Load Pyodide
   useEffect(() => {
@@ -105,18 +101,8 @@ sys.stdout = io.StringIO()
   };
 
   const markQuestionSolved = async (questionId) => {
-    if (!currentUser) return;
-
-    try {
-      const userRef = doc(db, 'users', currentUser.uid);
-      await updateDoc(userRef, {
-        'progress.solvedQuestions': arrayUnion(questionId),
-        'progress.totalScore': increment(10),
-        'progress.lastActive': new Date().toISOString(),
-      });
-    } catch (err) {
-      console.error('Failed to mark question solved:', err);
-    }
+    // Demo mode - just console log
+    console.log('✅ Question solved:', questionId);
   };
 
   const filteredQuestions =

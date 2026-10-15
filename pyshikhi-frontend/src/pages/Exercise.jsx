@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import { exercises } from '../data/exercises';
 import CodeEditor from '../components/CodeEditor';
 import { Play, Copy, Check, ChevronDown, ChevronRight } from 'lucide-react';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { useAuth } from '../contexts/AuthContext';
 
 const Exercise = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -14,7 +11,6 @@ const Exercise = () => {
   const [copiedIds, setCopiedIds] = useState({});
   const [pyodide, setPyodide] = useState(null);
   const [loadingPyodide, setLoadingPyodide] = useState(true);
-  const { currentUser } = useAuth();
 
   // Load Pyodide
   useEffect(() => {
@@ -91,17 +87,8 @@ sys.stdout = io.StringIO()
   };
 
   const markTopicComplete = async (topicId) => {
-    if (!currentUser) return;
-
-    try {
-      const userRef = doc(db, 'users', currentUser.uid);
-      await updateDoc(userRef, {
-        'progress.completedTopics': arrayUnion(topicId),
-        'progress.lastActive': new Date().toISOString(),
-      });
-    } catch (err) {
-      console.error('Failed to mark topic complete:', err);
-    }
+    // Demo mode - just show alert
+    alert('✅ টপিক সম্পূর্ণ হয়েছে! (Topic marked as complete!)');
   };
 
   return (

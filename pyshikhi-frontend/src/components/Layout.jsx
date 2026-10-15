@@ -1,39 +1,25 @@
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
   BookOpen, 
   Code, 
   Sparkles, 
-  LogOut, 
   Menu, 
   X, 
   Sun, 
   Moon,
-  User
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (err) {
-      console.error('Logout failed:', err);
-    }
-  };
 
   const navItems = [
-    { name: 'Exercise', name_bn: 'উদাহরণ', path: '/dashboard/exercise', icon: BookOpen },
-    { name: 'Question', name_bn: 'প্রশ্ন', path: '/dashboard/question', icon: Code },
-    { name: 'Solve', name_bn: 'সমাধান', path: '/dashboard/solve', icon: Sparkles },
+    { name: 'Exercise', name_bn: 'উদাহরণ', path: '/exercise', icon: BookOpen },
+    { name: 'Question', name_bn: 'প্রশ্ন', path: '/question', icon: Code },
+    { name: 'Solve', name_bn: 'সমাধান', path: '/solve', icon: Sparkles },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -52,14 +38,14 @@ const Layout = ({ children }) => {
               >
                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
-              <Link to="/dashboard" className="flex items-center gap-2">
+              <Link to="/" className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   PyShikhi
                 </h1>
               </Link>
             </div>
 
-            {/* Right Side: Theme Toggle, User Info, Logout */}
+            {/* Right Side: Theme Toggle Only */}
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleTheme}
@@ -73,20 +59,11 @@ const Layout = ({ children }) => {
                 )}
               </button>
 
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                <User className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                <span className="text-sm text-gray-700 dark:text-gray-200">
-                  {currentUser?.displayName || currentUser?.email}
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                <span className="text-sm text-indigo-700 dark:text-indigo-300 font-medium">
+                  🎯 Demo Mode
                 </span>
               </div>
-
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">লগআউট</span>
-              </button>
             </div>
           </div>
         </div>
